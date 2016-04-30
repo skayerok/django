@@ -1,0 +1,38 @@
+{% load staticfiles %}
+<a href="{% url 'books:new_book' %}">Добавить книгу</a>
+{% if books %}
+    <table>
+        <tr>
+            <td>Название книги</td>
+            <td>Автор</td>
+            <td>Год издания</td>
+            <td>ISBN</td>
+            <td>Количество страниц</td>
+            <td>Проголосовать</td>
+            <td>Количество голосов</td>
+            <td>Обложка</td>
+        </tr>
+    {% for book in books %}
+        <tr>
+            <td>{{ book.book_name }}</td>
+            <td>{{ book.author }}</td>
+            <td>{{ book.book_year }}</td>
+            <td>{{ book.isbn }}</td>
+            <td>{{ book.page_count }}</td>
+            <td>{% if book.voting_closed %}
+                    Голосование закрыто
+                {% else %}
+                <form action="{% url 'books:vote' book.id %}" method="post">
+                    {% csrf_token %}
+                    <input type="submit" value="Проголосовать">
+                </form>
+                {% endif %}
+            </td>
+            <td>{{ book.votes }}</td>
+            <td><img src="{% static book.image %}" alt="" height="100"></td>
+        </tr>
+    {% endfor %}
+    </table>
+{% else %}
+    <p>Пока книги не были добавлены</p>
+{% endif %}

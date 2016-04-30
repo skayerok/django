@@ -1,0 +1,6 @@
+<a href="{% url 'books:index' %}">Вернуться</a>
+<form enctype="multipart/form-data" action="{% url 'books:new_book' %}" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Add book">
+</form>

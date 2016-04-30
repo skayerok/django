@@ -9,8 +9,3 @@ class AddBook(forms.Form):
     isbn = forms.CharField(label='ISBN', max_length=20)
     page_count = forms.IntegerField(label='Page count', min_value=0)
     image = forms.ImageField(label='Book cover', max_length=100)
-
-
-class Authorization(forms.Form):
-    username = forms.CharField(label='Username', max_length=30)
-    password = forms.CharField(label='Password', max_length=40)

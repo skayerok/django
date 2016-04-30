@@ -16,7 +16,7 @@ class IndexView(LoginRequiredMixin, generic.ListView):
         return Book.objects.all()
 
 
-def add_book(request):
+def new_book(request):
     if not request.user.is_authenticated():
         return redirect('/')
     if request.method == 'POST':

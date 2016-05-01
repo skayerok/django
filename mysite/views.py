@@ -1,5 +1,8 @@
-from django.http import HttpResponse
+from django.http import HttpResponseRedirect
 
 
 def index(request):
-    return HttpResponse('some hardcoded index return')
+    if request.user.is_authenticated():
+        return HttpResponseRedirect('books')
+    else:
+        return HttpResponseRedirect('login/')

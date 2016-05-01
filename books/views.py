@@ -6,11 +6,12 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Book
 from .forms import AddBook
 
+LOGIN_URL = '/login'
 
 class IndexView(LoginRequiredMixin, generic.ListView):
     template_name = 'books/index.html'
     context_object_name = 'books'
-    login_url = '/'
+    login_url = LOGIN_URL
 
     def get_queryset(self):
         return Book.objects.all()
@@ -18,11 +19,11 @@ class IndexView(LoginRequiredMixin, generic.ListView):
 
 def new_book(request):
     if not request.user.is_authenticated():
-        return redirect('/')
+        return redirect(LOGIN_URL)
     if request.method == 'POST':
         form = AddBook(request.POST, request.FILES)
         if form.is_valid():
-            new_book = Book(
+            book = Book(
                 book_name=form.cleaned_data['book_name'],
                 author=form.cleaned_data['author'],
                 book_year=form.cleaned_data['book_year'],
@@ -32,7 +33,7 @@ def new_book(request):
                 votes=0,
                 image=request.FILES['image']
             )
-            new_book.save()
+            book.save()
             return HttpResponseRedirect('../')
     else:
         form = AddBook()

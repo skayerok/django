@@ -18,11 +18,13 @@ from django.contrib.auth import views as auth_views
 from django.contrib import admin
 from django.conf.urls.static import static
 
-from . import settings
+from . import settings, views
 
 
 urlpatterns = [
-    url(r'^login/$', auth_views.login),
+    url(r'^$', views.index, name='index'),
+    url(r'^login/', auth_views.login, name='login'),
+    # url(r'^login/', views.login, name='login'),
     url(r'^admin/', admin.site.urls),
     url(r'^polls/', include('polls.urls')),
     url(r'^books/', include('books.urls')),

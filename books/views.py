@@ -6,7 +6,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Book
 from .forms import AddBook
 
-LOGIN_URL = '/login'
+LOGIN_URL = 'login'
+
 
 class IndexView(LoginRequiredMixin, generic.ListView):
     template_name = 'books/index.html'
@@ -30,7 +31,6 @@ def new_book(request):
                 isbn=form.cleaned_data['isbn'],
                 page_count=form.cleaned_data['page_count'],
                 voting_closed=False,
-                votes=0,
                 image=request.FILES['image']
             )
             book.save()

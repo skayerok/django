@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class Book(models.Model):
@@ -8,7 +9,7 @@ class Book(models.Model):
     isbn = models.CharField(max_length=20, unique=True, null=True)
     page_count = models.IntegerField()
     voting_closed = models.BooleanField(default=False)
-    votes = models.IntegerField(default=0)
+    voters = models.ManyToManyField(User)
     image = models.ImageField(upload_to='images')
 
     def __str__(self):

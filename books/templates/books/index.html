@@ -28,7 +28,7 @@
                 </form>
                 {% endif %}
             </td>
-            <td>{{ book.votes }}</td>
+            <td>{{ book.voters.all|length }}</td>
             <td><img src="{{ book.image.url }}" alt="" height="100"></td>
         </tr>
     {% endfor %}

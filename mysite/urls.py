@@ -24,9 +24,7 @@ from . import settings, views
 urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^login/', auth_views.login, name='login'),
-    # url(r'^login/', views.login, name='login'),
     url(r'^admin/', admin.site.urls),
-    url(r'^polls/', include('polls.urls')),
     url(r'^books/', include('books.urls')),
 ]
 

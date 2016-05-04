@@ -4,14 +4,21 @@ from django.shortcuts import render, redirect
 from .models import Book
 from .forms import AddBook
 
-LOGIN_URL = 'login'
-
 
 def index(request):
+    """method is_voted to Book model.
+    Checks, if user already voted for the Book"""
+    def is_voted(self):
+        return self.voters.filter(username=request.user).exists()
+    Book.is_voted = is_voted
+
     if not request.user.is_authenticated():
         return redirect(LOGIN_URL)
     data = {'books': Book.objects.all()}
     return render(request, 'books/index.html', data)
+
+
+LOGIN_URL = 'login'
 
 
 def new_book(request):

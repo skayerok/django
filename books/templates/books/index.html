@@ -21,10 +21,15 @@
             <td>{{ book.page_count }}</td>
             <td>{% if book.voting_closed %}
                     Голосование закрыто
+                {% elif book.is_voted %}
+                <form action="{% url 'books:vote' book.id %}" method="post">
+                    {% csrf_token %}
+                    <input type="submit" name="unvote" value="Снять голос">
+                </form>
                 {% else %}
                 <form action="{% url 'books:vote' book.id %}" method="post">
                     {% csrf_token %}
-                    <input type="submit" value="Проголосовать">
+                    <input type="submit" name="vote" value="Проголосовать">
                 </form>
                 {% endif %}
             </td>

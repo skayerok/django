@@ -8,7 +8,7 @@ from .forms import AddBook
 def index(request):
     """method is_voted to Book model.
     Checks, if user already voted for the Book"""
-    def is_voted(self):
+    def is_voted(self):  # just subclass Book and add a new method
         return self.voters.filter(username=request.user).exists()
     Book.is_voted = is_voted
 
@@ -43,6 +43,6 @@ def new_book(request):
     return render(request, 'books/new_book.html', {'form': form})
 
 
-def vote(request, book_id):
-    book = Book.objects.filter(pk=book_id)
-    return HttpResponse('vote on %s' % Book.objects.get(id=book_id))
+def vote(request):
+    if request.method == 'POST':
+        return HttpResponse(data)

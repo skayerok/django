@@ -1,7 +1,5 @@
 from django.http import HttpResponse, HttpResponseRedirect
-from django.views import generic
 from django.shortcuts import render, redirect
-from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import Book
 from .forms import AddBook
@@ -9,13 +7,11 @@ from .forms import AddBook
 LOGIN_URL = 'login'
 
 
-class IndexView(LoginRequiredMixin, generic.ListView):
-    template_name = 'books/index.html'
-    context_object_name = 'books'
-    login_url = LOGIN_URL
-
-    def get_queryset(self):
-        return Book.objects.all()
+def index(request):
+    if not request.user.is_authenticated():
+        return redirect(LOGIN_URL)
+    data = {'books': Book.objects.all()}
+    return render(request, 'books/index.html', data)
 
 
 def new_book(request):
@@ -34,7 +30,7 @@ def new_book(request):
                 image=request.FILES['image']
             )
             book.save()
-            return HttpResponseRedirect('../')
+            return HttpResponseRedirect('../')  # mb should replace with just 'redirect'
     else:
         form = AddBook()
     return render(request, 'books/new_book.html', {'form': form})

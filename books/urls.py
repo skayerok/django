@@ -5,6 +5,7 @@ from . import views
 app_name = 'books'
 urlpatterns = [
     url(r'^$', views.index, name='index'),
-    url(r'^(?P<book_id>[0-9]+)/$', views.vote, name='vote'),
     url(r'new_book/$', views.new_book, name='new_book'),
+    url(r'unvote/$', views.unvote, name='unvote'),
+    url(r'vote/$', views.vote, name='vote'),
 ]

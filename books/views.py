@@ -15,7 +15,8 @@ def index(request):
     return render(request, 'books/index.html', data)
 
 
-LOGIN_URL = 'login'
+LOGIN_URL = '/login'
+CATALOG_URL = '/books'
 
 
 def new_book(request):
@@ -34,14 +35,26 @@ def new_book(request):
                 image=request.FILES['image']
             )
             book.save()
-            return HttpResponseRedirect('../')  # mb should replace with just 'redirect'
+            return HttpResponseRedirect(CATALOG_URL)
     else:
         form = AddBook()
     return render(request, 'books/new_book.html', {'form': form})
 
 
-def vote(request):
-    return HttpResponse('voting')
+def vote(request, book_id):
+    if not request.user.is_authenticated():
+        return redirect(LOGIN_URL)
+    book = Book.objects.get(id=book_id)
+    if request.user not in book.voters.all():
+        book.voters.add(request.user)
+        book.save()
+    return HttpResponseRedirect(CATALOG_URL)
 
-def unvote(request):
-    return HttpResponse('unvoting')
+def unvote(request, book_id):
+    if not request.user.is_authenticated():
+        return redirect(LOGIN_URL)
+    book = Book.objects.get(id=book_id)
+    if request.user in book.voters.all():
+        book.voters.remove(request.user)
+        book.save()
+    return HttpResponseRedirect(CATALOG_URL)

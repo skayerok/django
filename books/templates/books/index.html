@@ -22,9 +22,9 @@
             <td>{% if book.voting_closed %}
                     Голосование закрыто
                 {% elif user in book.voters.all %}
-                    <a href="unvote">Снять голос</a>
+                    <a href="{% url 'books:unvote' book.id %}">Снять голос</a>
                 {% else %}
-                    <a href="vote">Проголосовать</a>
+                    <a href="{% url 'books:vote' book.id %}">Проголосовать</a>
                 {% endif %}
             </td>
             <td>{{ book.voters.all|length }}</td>

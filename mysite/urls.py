@@ -26,6 +26,7 @@ urlpatterns = [
     url(r'^login/', auth_views.login, name='login'),
     url(r'^admin/', admin.site.urls),
     url(r'^books/', include('books.urls')),
+    url(r'^api/', include('quickstart.urls')),
 ]
 
 if settings.DEBUG:

@@ -1,6 +1,8 @@
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, redirect
+from django.http import HttpResponseRedirect
+from django.shortcuts import render, redirect, get_object_or_404
+from rest_framework import viewsets
 
+from .serializers import BookSerializer
 from .models import Book
 from .forms import AddBook
 
@@ -17,6 +19,11 @@ def index(request):
 
 LOGIN_URL = '/login'
 CATALOG_URL = '/books'
+
+
+class BookViewSet(viewsets.ModelViewSet):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
 
 
 def new_book(request):
@@ -41,20 +48,20 @@ def new_book(request):
     return render(request, 'books/new_book.html', {'form': form})
 
 
-def vote(request, book_id):
-    if not request.user.is_authenticated():
-        return redirect(LOGIN_URL)
-    book = Book.objects.get(id=book_id)
-    if request.user not in book.voters.all():
-        book.voters.add(request.user)
-        book.save()
-    return HttpResponseRedirect(CATALOG_URL)
+def detail(request, book_id):
+    if request.method == 'GET':
+        book = get_object_or_404(Book, id=book_id)
+        return render(request, 'books/book_detail.html', {'book': book})
 
-def unvote(request, book_id):
+
+def vote(request, book_id):
     if not request.user.is_authenticated():
         return redirect(LOGIN_URL)
     book = Book.objects.get(id=book_id)
     if request.user in book.voters.all():
         book.voters.remove(request.user)
-        book.save()
+    else:
+        book.voters.add(request.user)
+    book.save()
     return HttpResponseRedirect(CATALOG_URL)
+
